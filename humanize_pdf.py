@@ -145,7 +145,7 @@ def humanize_pdf(
     font_cache_dir.mkdir(parents=True, exist_ok=True)
     fontfile_by_xref: dict[int, str] = {}
     # (page_number, span_font_name) -> fontfile
-    fontfile_by_span_cache: dict[tuple[int, str], str] = {}
+    fontfile_by_span_cache: dict[tuple[int, str], Optional[str]] = {}
 
     # Cache humanization results for repeated blocks/lines within the same run.
     # With a fixed seed, texthumanize is deterministic for identical input text,
@@ -165,6 +165,7 @@ def humanize_pdf(
         color: tuple[float, float, float] = (0, 0, 0),
         max_iters: int = 10,
         shrink_factor: float = 0.92,
+        preserve_fontsize: bool = True,
     ) -> float:
         """
         Insert text into `rect`, shrinking font size until all text fits.
@@ -175,17 +176,23 @@ def humanize_pdf(
 
         fontsize = float(fontsize_initial)
         last_ret: float = -1.0
+        rect_current = fitz.Rect(rect)
+        rect_initial_height = float(rect.height)
+        max_total_pad = rect_initial_height * 0.8  # cap how much we expand
+        pad_step = rect_initial_height * 0.08
+        total_pad = 0.0
+
         for _ in range(max_iters):
             if fontsize < fontsize_min:
                 break
 
             # Clear any previous attempt within the region.
             page_obj.draw_rect(
-                rect, color=(1, 1, 1), fill=(1, 1, 1), overlay=True
+                rect_current, color=(1, 1, 1), fill=(1, 1, 1), overlay=True
             )
 
             ret = page_obj.insert_textbox(
-                rect,
+                rect_current,
                 text,
                 fontsize=fontsize,
                 fontname=fontname,
@@ -197,7 +204,16 @@ def humanize_pdf(
             if last_ret >= 0:
                 return fontsize
 
-            fontsize *= shrink_factor
+            if preserve_fontsize:
+                # Text didn't fit. Expand rectangle to keep original font size
+                # (better typographic fidelity; slight spatial risk).
+                if total_pad >= max_total_pad:
+                    break
+                pad = min(pad_step, max_total_pad - total_pad)
+                rect_current = _inflate_rect(rect_current, pad=pad)
+                total_pad += pad
+            else:
+                fontsize *= shrink_factor
 
         return fontsize
 
@@ -232,34 +248,43 @@ def humanize_pdf(
     ) -> Optional[str]:
         # Try cache first.
         cache_key = (page_number, span_font_name)
-        cached = fontfile_by_span_cache.get(cache_key)
-        if cached is not None:
-            return cached
+        if cache_key in fontfile_by_span_cache:
+            return fontfile_by_span_cache[cache_key]
 
         page_fonts = doc_obj.get_page_fonts(page_number)
         # Each entry: (xref, type, subtype, name, psname, encoding)
         candidates = [(f[0], f[3].split("+")[-1]) for f in page_fonts]
 
-        sf = (span_font_name or "").lower()
-        is_bold = "bold" in sf
-        is_italic = "ital" in sf
-        family_times = "times" in sf
-        family_courier = "cour" in sf
+        def _norm_font(n: str) -> str:
+            nn = (n or "").strip().lower()
+            # Normalize common variants
+            nn = nn.replace("bolditalic", "bold-italic")
+            nn = nn.replace("bold ital", "bold-italic")
+            nn = nn.replace("bold ital", "bold-italic")
+            nn = nn.replace("ital", "italic")
+            # Drop punctuation and hyphens for matching
+            nn = re.sub(r"[^a-z0-9]+", "", nn)
+            return nn
+
+        sf = (span_font_name or "")
+        sf_norm = _norm_font(sf)
 
         def score(base_name: str) -> int:
-            b = base_name.lower()
+            b_norm = _norm_font(base_name)
+            if b_norm == sf_norm:
+                return 100
+            # Heuristic partial match
             s = 0
-            if family_times and "times" in b:
+            if "times" in b_norm and "times" in sf_norm:
+                s += 10
+            if "cour" in b_norm and "cour" in sf_norm:
+                s += 10
+            if "bold" in sf_norm and "bold" in b_norm:
                 s += 5
-            if family_courier and "cour" in b:
+            if "italic" in sf_norm and "italic" in b_norm:
                 s += 5
-            if is_bold and "bold" in b:
-                s += 2
-            if is_italic and ("italic" in b or "ital" in b):
-                s += 2
-            # Prefer closer match when removing prefixes/suffixes.
-            if sf.replace("-", "") in b.replace("-", ""):
-                s += 3
+            if sf_norm and sf_norm in b_norm:
+                s += 20
             return s
 
         best_xref = None
@@ -272,7 +297,7 @@ def humanize_pdf(
 
         if best_xref is None:
             # Let insert_textbox fall back to `fontname`.
-            fontfile_by_span_cache[cache_key] = ""
+            fontfile_by_span_cache[cache_key] = None
             return None
 
         fontfile = _extract_fontfile_for_xref(doc_obj, int(best_xref))
