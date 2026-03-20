@@ -119,3 +119,51 @@ python humanize_docx.py input.docx -o output.docx \
   --min-chars 2
 ```
 
+---
+
+## Repairing DOCX Outputs (newline cleanup)
+
+If you see odd reflow/layout issues after `humanize_docx.py`, it can help to remove newline characters that end up inside `<w:t>` text nodes.
+
+Run:
+
+```bash
+python repair_docx_wt_newlines.py input.docx -o output.docx
+```
+
+This edits only `word/document.xml` and validates that no `<w:t>` nodes still contain `\n` or `\r` after repair.
+
+---
+## PDF Support (`.pdf`)
+
+This project also includes a PDF-focused script: `humanize_pdf.py`.
+
+### What it does
+
+- Uses [`PyMuPDF`](https://pypi.org/project/PyMuPDF/) to extract embedded text along with bounding boxes.
+- Humanizes the extracted text line-by-line using `texthumanize`.
+- Covers the original text regions with a white rectangle and re-inserts the humanized text back into the same approximate regions.
+
+### Important limitations
+
+- This works best for PDFs that contain real, extractable text (not scanned images).
+- Even for text-based PDFs, fonts/colors/spacing may shift slightly depending on how the PDF stores glyph positioning.
+
+### Usage
+
+```bash
+python humanize_pdf.py input.pdf -o output.pdf
+```
+
+Optional flags:
+
+```bash
+python humanize_pdf.py input.pdf -o output.pdf \
+  --lang en \
+  --profile academic \
+  --intensity 30 \
+  --seed 42 \
+  --min-chars 2 \
+  --min-text-chars 50
+```
+
