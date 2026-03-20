@@ -23,6 +23,7 @@ pip install -r requirements.txt
 This installs:
 
 - `texthumanize` ≥ 0.27.1
+- `lxml` (used for safe DOCX XML edits)
 
 ---
 
@@ -82,4 +83,39 @@ python humanize_paper.py whole.txt \
 - For best results:
   - Start with `profile="academic"` and low–moderate `intensity` (20–40).
   - Manually review the humanized text to ensure scholarly tone, correct terminology, and no template artefacts were altered in an unintended way.
+
+---
+
+## DOCX Support (Word `.docx`)
+
+This project also includes a DOCX-focused script: `humanize_docx.py`.
+
+### What it edits
+
+- Only the main body text inside `word/document.xml` by replacing the contents of `<w:t>` text nodes.
+- It skips:
+  - Word field instructions (`w:instrText`)
+  - Word math nodes (`m:*`)
+
+### Pitfalls / complications
+
+- Word often splits visible text across multiple runs/text nodes, so humanizing per `<w:t>` can reduce global coherence.
+- Formatting is preserved structurally (we do not change `w:rPr`, paragraph/run structure, etc.), but the wording changes are still inserted at the text-node level.
+
+### Usage
+
+```bash
+python humanize_docx.py input.docx -o output.docx
+```
+
+Optional flags:
+
+```bash
+python humanize_docx.py input.docx -o output.docx \
+  --lang en \
+  --profile academic \
+  --intensity 30 \
+  --seed 42 \
+  --min-chars 2
+```
 
