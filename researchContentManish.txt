@@ -1,0 +1,655 @@
+Abstract—Many neural network architectures have been 
+developed for image restoration, primarily focusing on 
+improving accuracy while maintaining computational 
+efficiency. However, comparatively little attention has been 
+given to optimizing training strategies. This paper introduces 
+Deep-Feature Auxiliary Guidance (DFAG), a novel training 
+method designed to enhance the accuracy of image 
+Restoration models without increasing inference time or 
+altering their architectures. DFAG integrates auxiliary losses 
+at Each multi-scale level during training, which helps 
+stabilize deep feature learning and improves overall feature 
+quality. All DFAG modules operate only during the training 
+phase And are removed during inference, ensuring that no 
+additional computational cost is incurred. We evaluate DFAG 
+on Various multi-scale encoder-decoder- based image 
+restoration Models and observe consistent performance 
+improvements across multiple tasks, including real image 
+denoising, Gaussian denoising, motion deblurring, JPEG 
+artifact reduction, and super-resolution. Without requiring 
+architectural modifications, these results demonstrate that 
+DFAG is an effective strategy for boosting image restoration 
+performance. 
+Reduced observations. Any form of degradation, 
+Including noise, blur, compression artifact, and resolution 
+loss, May have a severe detrimental effect on the image 
+quality And the application of the image downstream, 
+including the medical imaging, autonomous systems, 
+remote sensing, and digital photography. Of art drastically 
+improve using deep learning-based, in the last ten years, 
+image restoration problems have seen the state methods. 
+Specifically, convolutional  neural  networks  (CNNs)  
+and Encoder-decoder networks have been found to be 
+Powerful at learning complicated mapping of degraded 
+images to clean ones. Problems, including denoising, 
+deblurring, artifact removal, and super-resolution, these 
+models can capture hierarchical properties, which 
+contextual information on multi-scale levels, allowing 
+them to be useful on a wide range of restoration. 
+Keywords-JPEG artifact removal, image deblurring, 
+image denoising, image restoration, super-resolution. 
+I. 
+INTRODUCTION 
+Image restoration is a basic issue in the computer vision That 
+intents to restore high quality images on the basis of 
+The major area of research in recent times has been Based 
+on bettering network architectures, in order to Accomplish 
+better restoration performance at the cost of not 
+Sacrificing the computational efficiency. Such methods 
+As multi-scale feature extraction, attention, residual 
+Learning, and transformer-based modules are well-studied 
+to improve the representational strength of the restoration 
+networks.Despite The fact that the architectural 
+innovations have generated significant improvements, it Is 
+common that they are accompanied with increased Model 
+complexity, increased memory requirements, or Increased 
+inference times. 
+II. 
+KEY CONTRIBUTIONS 
+In the field In Practice (especially in real time or resource 
+limited scenarios), it is important to ensure efficient 
+Inference without compromising high restoration quality. 
+Although a lot of emphasis has been placed on an 
+architectural design, relatively little has been done to 
+Enhance the training strategies of these networks. Of deep 
+models, the methodology of training is very important in 
+defining the quality of learned features, which the overall 
+performance. Badly trained training may give rise to 
+unsteady feature training, slow training, or sub-optimal 
+representations, in particular in deep multi-scale networks 
+where data is required to flow through several layers and 
+scales. Thus, effective training strategies which are capable 
+of increasing feature learning without complicating 
+inferences are a valuable direction in research. 
+In an attempt to overcome this problem, this paper presents 
+Deep-Feature Auxiliary Guidance (DFAG), a new training 
+methodology aimed at enhancing the acquisition of deep 
+features in multi-scale image restoration networks. DFAG 
+was built on the following essential concept: additional 
+Loses are added to the training process on multiple scales to 
+provide the network with larger guidance at the Intermediate 
+feature levels. The learning process is stabilizzed by the 
+method. And promotes the network to generate better 
+intermediate representations, and eventually, the overall 
+performance of the restoration. The DFAG modules are only 
+activated when training. It are fully deactivated when 
+making predictions so that the architecture of. the model And 
+computational overheads do Not change during deployment. 
+We test the suggested DFAG strategy on a series of 
+Encoder-decoder based image restoration models on various 
+restoration tasks. In the tasks such, the experimental findings 
+show that there are consistent performance improvements. 
+As real image denoising, Gaussian denoising, motion 
+deblurring,  
+JPEG  artifact  reduction,  and  image 
+Super-resolution. The usefulness is revealed of by these 
+findings. the DFAG as a lightweight training enhancement 
+method that can be effectively used to enhance the 
+performance of restorations without adding extra inference 
+overheads or architecture changes. The multi-scale 
+supervision Mechanism strengthens deep feature learning 
+and stabilizes gradient propagation during training. The 
+auxiliary Guidance provided at different levels helps the 
+model capture both Fine textures and global image structures 
+more effectively. For practical image restoration apps as a 
+result, the framework achieves improved PSNR, SSIM, and 
+perceptual quality, making it suitable. 
+● Proposed Training Strategy (DFAG) 
+To enhance the learning ability of the already trained 
+multi-scale encoder-decoder image restoration models, 
+we present Deep-Feature Auxiliary Guidance (DFAG), 
+A simple but suitable training approach. Deeper, which 
+more stable and informative representations and still 
+maintain the original network, dFAG provokes 
+intermediate-level supervision in the training process, 
+allowing the network to learn. The proposed modules 
+are abandoned at the training stage, and they are 
+removed when making inferences, which does not add 
+any extra computational cost to the deployment. 
+● Training-Level 
+Improvement 
+Without Architectural Modification : 
+Our method, in contrast to many other available 
+Methods that enhance the performance by changing the 
+network architectures or trying to define more complex 
+models, works on the training process itself. DFAG Can 
+be incorporated into the existing multi-scale encoder- 
+decoder frameworks without causing any structural 
+redesigning of these frameworks, thus being flexible 
+And light weight to add on to restore the performance of 
+these multi-scale restorations.. 
+● Analysis of Limitations in Conventional 
+Training Methods: 
+We conduct a detailed analysis of conventional training 
+strategies used in multi-scale image restoration 
+Networks and highlight their limitations, mainly in 
+terms of insufficient intermediate supervision and 
+unstable deep feature learning. Based on this analysis, 
+we Demonstrate how DFAG addresses these issues by 
+providing multi- scale auxiliary guidance that stabilizes 
+feature learning and improves representation quality 
+across different network depths. 
+●  Improved Feature Learning Through Multi- 
+Scale Supervision 
+We perform a critical examination of the traditional 
+training mechanisms applicable in multi-scale image 
+collapse structures and outline its drawbacks, Especially 
+inadequate interior guidance and wobbly profound 
+attribute acquisition. On the basis of such an analysis, 
+We show how DFAG alleviates such problems with 
+multi- scale auxiliary guidance that stabilizes feature 
+learning and enhances representation quality in 
+Multi-network depths. 
+● Extensive Experimental Validation Across Tasks 
+and Models. 
+We prove the usefulness of DFAG by extensive 
+experiments on a variety of image restoration tasks like 
+Real image denoising, Gaussian denoising, motion 
+deblurring, reduction of the JPEG compression artifact, and 
+image super-resolution. Indicate that the commonalities of 
+is finded by these experimental. performance enhancement 
+occur With the implementation of DFAG to the different 
+multi-scale encoder-deceler structures. 
+● Generalizable and Practical Framework. 
+The suggested DFAG framework is very flexible and 
+may be used as an addon to a broad spectrum of already 
+existing image restoration networks. Since it does not 
+involve an extra inference cost and requires few 
+adjustments when training it, it can be used in a real- 
+world setting to offer a viable and scalable solution in 
+improving the restoration performance of the system. 
+Figure 1. Multi-scale U-Net encoder-decoder architecture 
+III. RELATED WORKS 
+A. 
+Image Restoration : EImage Restoration is 
+desired to achieve the high-quality image recovery By 
+removing noisy background, blur, compression 
+artifacts or loss of image resolution in deteriorated 
+observations. The conventional image restoration 
+schemes had heavy dependency on manual priors, as 
+well as optimization-based ones. The total variation 
+(TV) regularization method by Rudin et al. [1], the 
+sparse coding method by Elad and Aharon [2], and 
+The non-local filter method as used in BM3D by 
+Dabov Et al. [3] were all quite successful methods in 
+the 
+field of denoising and restoration. These 
+algorithms usually bore heavy statistical hypotheses 
+Of natural images and on optimization processes. 
+CNNs have risen to be the state-of-the-art in image 
+restoration with the fastest development of deep 
+learning. Methods are denoised by one of the first 
+images. 
+That used deep learning was DnCNN Introduced by 
+Zhang et al. [4] that showed that deep CNNs could Be 
+trained to make residual mappings between distorted 
+and clean images. In a similar fashion, the Introduction 
+of SRCNN by Dong et al. [5] was a significant 
+breakthrough in single-image super-resolution since it 
+demonstrated that CNNs could directly be trained to 
+learn end-to-end mappings to image-enhancement 
+problems. 
+Based on these initial achievements numerous 
+architectures have been created to enhance the 
+performance of restorations. The use of encoder- 
+decoder networks such as U-Net by Ronneberger et al. 
+[6] Gained much popularity as it enabled general 
+context and fine-grained local myatesa To capture 
+spatial structure by use of skip connections and multi- 
+scale feature-detection. Later publications have even 
+improved these architectures through the addition of 
+residual learning, dense connections and multi-stage 
+refinement architectures. 
+Recent work on image restoration has made more 
+usage of attention mechanisms and transformer 
+architectures. Models that enable channels. It spatial 
+attention mechanisms like those suggested in RCAN 
+(Residual Channel Attention Network) by. Zhang et al. 
+[7] Also enable models to focus on and highlight 
+informative features selectively. On transformers like, 
+it was Models who based. SwinIR Suggested by Liang 
+et al. [8] use self-attention to include long-range 
+relationships 
+and 
+global 
+contextual 
+data. 
+Simultaneously, diffusion-based models have proven 
+in image restoration operations to be promising as well 
+Because of their powerful generative ability [9]. 
+Multi-scale feature processing is another area of 
+significant focus in modern restoration models In 
+which the information is extracted and processed At 
+various scales. Multi-scale architectures make 
+Networks capture global structures in addition to local 
+details. These are e. g, hierarchical encoder-decoder 
+models, or multi-stage restoration networks. Although 
+the 
+approaches outlined concentrate more on 
+architectural innovations, our work will be of a 
+different perspective of enhancing the training Strategy 
+itself. And feature learning, in particular, the suggested 
+Deep-Feature Auxiliary Guidance ( DFAG) increases 
+the stability of trainings via auxiliary Supervision 
+without altering the underlying model structure and Or 
+adding complexity to the inferences. 
+B. 
+Auxiliary Guidance: Auxiliary supervision 
+is an efficient technique that has been adopted a long 
+time ago in enhancing the training of Deep neural 
+networks. The first and the most effective one is 
+GoogLeNet (Inception Network) [10] by Szegedy 
+Et al. which adds auxiliary classifiers to intermediate 
+networks to ease the vanishing gradient issue and 
+enhance the performance of training very deep Networks. 
+In training, these auxiliary branches offered more 
+supervision signals. to enable more discriminative 
+Features to be learnt by intermediate layers. 
+Later works have shown that auxiliary losses may serve 
+as a regularization mechanism and that it can be used to 
+guide intermediate representations and stabilize gradient 
+flow in the network. Lee et al. [11] created the idea of 
+deeply supervised networks to have the use of 
+supervision signals in more than one depth of the 
+network to enhance the learning of features, besides 
+accelerating the convergence. The strategy has been 
+effectively implemented in different fields such as Image 
+classification, semantic segmentation and medical image 
+analysis. 
+Auxiliary losses are typically employed in guiding the 
+learning of features at intermediate network stages in 
+computer vision activities like semantic segmentation. 
+Indicatively, architectures such as PSPNet [12] add the 
+additional 
+supervision 
+component 
+of 
+assisting 
+optimization and allowing the network to learn useful 
+intermediate representations. In the same way, the 
+auxiliary guidance has been studied in generative Models 
+and diffusion models to increase training stability. 
+Though the advantage of auxiliary supervision has been 
+proved in most of the vision tasks, its usage in image 
+restoration 
+networks, 
+especially 
+in 
+multi-scale 
+Encoder-decoder networks, is relatively understudied. In 
+the 
+intermediate supervision strategy, the image 
+restoration models usually have deep hierarchical 
+structure, which the feature refinement process takes 
+place on different scales, and thus are a good candidate. 
+Driven by this observation, our contribution is Deep- 
+Features Auxiliary Guidance (DFAG) where auxiliary 
+losses on multiscales Are introduced into the training 
+process. Compared to the previous methods in which The 
+main emphasis is placed on the architectural 
+enhancements, DFAG targets the quality of feature 
+learning and training stability but preserves the original 
+model structure and computational efficiency in the 
+inference. 
+IV. PROPOSED SYSTEM 
+The proposed system introduces a novel training strategy 
+called Deep-Feature Auxiliary Guidance (DFAG) to 
+enhance  
+the  
+performance  
+of  
+multi-scale 
+Encoder-decoder-based image restoration model without 
+modifying their architecture or increasing computational 
+cost during inference. 
+Traditional image restoration networks typically 
+Apply supervision only at the final output layer using 
+A single loss function. While this approach Simplifies 
+training, it often leads to two major problems: 
+vanishing gradients in deeper encoder layers and 
+ambiguity in sub-task allocation between decoder 
+And up-sampling modules. Poorly, deep feature 
+representations become unstable, saturated, or 
+optimized, 
+ultimately 
+limiting 
+restoration 
+performance as a result. To address these limitations, 
+the 
+proposed 
+system 
+incorporates 
+auxiliary 
+supervision At multiple intermediate scale levels 
+during training, thereby strengthening gradient flow 
+and improving feature learning across the entire 
+network. 
+Figure 2. Quantitative comparison of PSNR 
+The backbone remains a standard multi-scale Encoder- 
+decoder architecture, such as U-Net or transformer- 
+based variants commonly used in image restoration 
+tasks. 
+The encoder progressively extracts hierarchical 
+features through down-sampling operations, capturing 
+both local textures and global contextual information. 
+Then, the decoder reconstructs the high-quality image 
+by progressively up-sampling, which refining these 
+features, with skip connections linking corresponding 
+encoder and decoder levels to preserve spatial details. 
+Importantly, the architecture itself remains unchanged 
+DFAG modifies only the training process.During 
+Training, auxiliary guidance modules are attached to 
+the output of each decoder level before The 
+up-sampling operation. 
+Each auxiliary module consists of a lightweight 3×3 
+convolution layer that converts intermediate feature 
+Maps into residual image predictions with the same 
+number of channels as the ground truth image. Since 
+who intermediate feature maps exist at lower, it was. 
+resolutions, The corresponding ground truth residual 
+image is Down-sampled using average pooling to 
+match the spatial dimensions of each scale level. An L1 
+loss is Then computed between the predicted residual 
+and The down-sampled ground truth residual. To 
+intermediate layers, creating shorter, these auxiliary 
+losses provide direct supervision gradient paths and 
+effectively Mitigating the vanishing gradient problem 
+that typically affects deep encoder layers. 
+The overall training objective of the proposed system Is 
+defined as a combination of the primary restoration Loss 
+and multiple auxiliary losses. Specifically, the total Loss 
+is formulated as the sum of the main loss applied at The 
+final output and a weighted sum of auxiliary losses 
+applied at each intermediate scale. To ensure stable 
+optimization, 
+a 
+balancing 
+parameter 
+controls 
+contributing auxiliary supervision. By Distributing 
+supervision across multiple scales, the system ensures 
+that deep feature representations Receive sufficient 
+gradient updates, leading to more stable learning and 
+improved semantic consistency in Low-resolution 
+feature regions. 
+To improving gradient flow, the proposed system also 
+clarifies the functional roles of decoder and up-sampling 
+modules. In conventional training, flexible up-sampling 
+techniques such as pixel shuffle may unintentionally 
+assume feature extraction responsibilities, causing grid
+like artifacts and unstable feature representations. By 
+supervising decoder outputs directly before up
+sampling, DFAG encourages Decoders to focus solely 
+on feature extraction while allowing up-sampling 
+modules to concentrate strictly On resolution 
+enhancement. This clearer sub-task Allocation results in 
+smoother feature transitions and reduced artifact 
+generation. 
+To further enhance performance, the proposed system 
+employs a multi-stage training strategy. In the first 
+Stage, the model is trained using both the main loss And 
+auxiliary losses to stabilize deep feature learning. 
+In the second stage, all auxiliary modules are removed, 
+and the model is fine-tuned using only the primary 
+restoration loss. 
+Figure 3. Ablation study of different weight configurations 
+Since the auxiliary components are used Exclusively 
+during training and completely removed during 
+inference, the proposed system introduces no 
+additional computational overhead, memory cost, Or 
+structural modification at deployment time. 
+Overall, the proposed DFAG-based system Provides 
+a simple yet highly effective training enhancement 
+framework for image restoration models. It 
+Improves gradient distribution, stabilizes deep 
+feature learning, reduces artifacts, and consistently 
+boosts restoration accuracy across tasks such as Real 
+image denoising, Gaussian denoising, motion 
+deblurring,  
+JPEG  artifact  reduction,  and 
+Super-resolution. 
+Importantly, 
+most, 
+these 
+improvements are achieved without altering the 
+original 
+architecture 
+or increasing inference 
+complexity, making the proposed system practical, 
+scalable, 
+and easily adaptable to existing 
+State-of-the-art restoration networks. 
+Figure 4. Overall process of DFAG. 
+V. SYSTEM IMPLEMENTATION 
+The proposed system for learning high-quality image 
+restoration models is designed around a deep neural 
+architecture enhanced through auxiliary training with 
+deep feature-level guidance. The core objective of the 
+framework is to improve perceptual and structural 
+quality of restored images by integrating semantic 
+supervision during the training phase. The system 
+consists of a primary restoration network responsible For 
+reconstructing degraded images and an auxiliary feature 
+guidance mechanism that operates exclusively during 
+training. The primary network follows a deep 
+convolutional architecture composed of stacked 
+convolutional layers, residual blocks, and non-linear 
+activation functions to effectively learn hierarchical 
+feature representations. This network accepts degraded 
+images affected by noise, blur, compression artifacts, Or 
+resolution loss and produces restored outputs that aim 
+To approximate the original high- quality images. 
+To strengthen the learning process, an auxiliary Network 
+is incorporated to provide feature-level supervision. 
+This auxiliary component extracts high- level 
+representations from both the restored output and the 
+corresponding ground truth image. These features 
+capture semantic information such as texture patterns, 
+structural edges. It contextual relationships that are. Not 
+fully represented through pixel-level comparison alone. 
+Through the restoration network to generate a 
+reconstructed image is passed by during the forward 
+propagation stage, the degraded image. 
+Both the reconstructed image and the ground truth 
+image are then fed into the auxiliary feature extractor. 
+The extracted deep features are compared to compute a 
+perceptual loss, which encourages the restoration 
+network to generate outputs that are not only 
+numerically accurate but also visually meaningful. 
+The overall training objective is formulated as a 
+weighted combination of multiple loss functions. A 
+pixel-level reconstruction loss, typically L1 loss, Ensures 
+fidelity between restored and ground truth images. And 
+reference images, a feature-level perceptual loss 
+minimizes the difference between deep representations 
+of restored. In some configurations, additional structural 
+similarity loss may be included to enhance edge 
+preservation and structural consistency. The total loss 
+function balances these components using adjustable 
+weighting parameters, allowing controlled influence of 
+each supervision signal. Optimization 
+Is performed using the Adam optimizer with a 
+carefully selected learning rate schedule to ensure 
+stable convergence. 
+The training process utilizes data augmentation 
+techniques such as cropping, rotation, and 
+Horizontal 
+flipping 
+to 
+improve 
+model 
+generalization. Computational demands efficiently, 
+the system is implemented using modern deep 
+learning frameworks, which trained on GPU-based 
+hardware to handle. Importantly, the auxiliary 
+branch is removed during inference, ensuring that 
+the final model remains lightweight and suitable for 
+real-time deployment. 
+Figure 5. PSNR vs. FLOPs comparison 
+VI. RESULT 
+The experimental evaluation of the proposed 
+framework demonstrates clear improvements over 
+conventional image restoration models trained solely 
+with pixel-based supervision. Quantitative results 
+across benchmark datasets indicate higher PSNR 
+values, reflecting improved reconstruction accuracy. 
+Structural Similarity Index (SSIM) scores also Show 
+consistent 
+enhancement, 
+suggesting 
+better 
+preservation of spatial structures and image 
+Textures. To ground truth images, in terms of 
+texture and fine detail, furthermore, perceptual 
+similarity assessments reveal that the proposed 
+method produces outputs that are visually closer. 
+Qualitative analysis further supports these findings.. 
+REFERENCES 
+Unlike traditional methoDs that often sacrifice high- 
+frequency details to minimize pixel error, The 
+feature-guided training strategy enables the network to 
+recover subtle visual elements such as hair strands, 
+object contours, and fine background textures. Also, 
+color consistency and natural appearance are noticeably 
+improved. The integration of deep feature-level 
+supervision allows the model to understand contextual 
+and semantic information, leading to outputs that are 
+perceptually 
+more 
+realistic. 
+Despite 
+these 
+improvements, the inference complexity remains 
+unchanged due to the removal of the auxiliary Guidance 
+module after training, maintaining efficiency without 
+compromising quality. 
+VII. CONCLUSION 
+This study presents a comprehensive image restoration 
+framework that leverages auxiliary training with deep 
+feature-level guidance to enhance restoration quality. 
+Through deep feature comparison, by integrating semantic 
+information during training, the proposed method 
+Addresses limitations associated with traditional pixel-only 
+loss optimization. That combining is demonstrated by the 
+results. Pixel-level and perceptual supervision leads to 
+substantial improvements in both objective metrics and 
+subjective visual quality. The framework effectively 
+balances reconstruction fidelity, which perceptual realism. 
+While maintaining computational efficiency at inference 
+time. 
+It 
+perceptual 
+realism 
+while 
+computational efficiency at inference time. 
+maintaining 
+The findings confirm that auxiliary guidance is a Powerful 
+strategy for enhancing deep learning-based restoration 
+models and can be extended to various low-level vision 
+tasks. 
+VIII. FUTURE DEVELOPMENT 
+Future research directions can further expand and refine 
+this 
+framework. Incorporating transformer- based 
+architectures may improve the modeling of long-range 
+dependencies. It global contextual relationships within 
+images. Adaptive loss weighting strategies could 
+dynamically adjust supervision strength based on 
+degradation severity or Image content. Training with 
+real-world degradation datasets instead of synthetic 
+distortions  
+would improve robustness in Practical 
+applications. Additionally, model compression 
+Techniques such as pruning and knowledge distillation 
+could Enable deployment on resource-constrained 
+devices such as smartphones   
+and  embedded
+systems.   
+learning  
+Integrating adversarial 
+mechanisms may  
+further 
+enhance perceptual  realism by encouraging The 
+generation of sharper and more natural textures. 
+[1] 
+[2] 
+Rudin, Osher, and Fatemi, Nonlinear total 
+Variation based Noise removal algorithms, 1992. 
+Elad and Aharon, Image denoising via Sparse 
+and redundant representations over learned dictionaries, 
+2006. 
+[3] 
+[4] 
+Dabov Et al, Image denoising by sparse 3D 
+transform- domain collaborative filtering (BM3D), 2007. 
+Zhang et al, Beyond a Gaussian denoiser: 
+Residual learning of deep CNN for image denoising 
+(DnCNN), 2017. 
+[5] 
+Dong et al, Image Super-Resolution Using 
+Deep Convolutional Networks (SRCNN), 2014. 
+[6] 
+Ronneberger Et al, U-Net: Convolutional 
+Networks for Biomedical Image Segmentation, 2015. 
+[7] 
+Zhang et al, RCAN: Image Super-Resolution 
+Using Very Deep Residual Channel Attention Networks, 
+2018. 
+[8] 
+Liang et al, SwinIR: Image Restoration 
+Using Swin Transformer, 2021. 
+[9] 
+Ho et al, Denoising Diffusion Probabilistic 
+Models, 2020. 
+[10] 
+Szegedy et al, Going Deeper with 
+Convolutions (GoogLeNet), 2015. 
+[12] 
+[11] Lee et al, Deeply-Supervised Nets, 2015. 
+Zhao et al, Pyramid Scene Parsing Network 
+(PSPNet), 2017 
+[13]A. Abdelhamed, S. Lin, and M. S. Brown, ''A high- 
+quality denoising dataset for smartphone cameras,'' in Proc. 
+IEEE/CVF Conf. Comput. Vis. Pattern Recognit, Jun. 
+2018, 
+pp. 1692–1700. 
+[14]J. Huang, A. Ahuja, ''Single image super-resolution 
+from transformed self-exemplars,'' in Proc. 
+[15]S. Nah, T. H. Kim, and K. M. Lee, ''Deep 
+multi-scale convolutional neural network for dynamic 
+Scene deblurring,'' in Proc. IEEE Conf. Comput. Vis. 
+Pattern Recognit. (CVPR), Jul. 2017, pp. 257-265. 
+[16]Z. Shen, W. T. Xu, and 
+L. Shao, ''Humanaware Motion deblurring,'' in Proc. ICCV, 
+Oct. 2019, pp. 5571–5580. 
+[17]H. Sheikh. (2005). Live Image Quality Assessment 
+Database 
+Release 
+2. 
+[Online]. 
+http://live.ece.utexas.edu/research/quality 
+Available: 
+[18]J. Su, B. Xu, and H. Yin, ''A survey of deep 
+learning 
+approaches 
+Neurocomputing, vol. 487, 
+Pp. 46-65, May 2022. 
+to 
+image 
+restoration,'' 
+[19]M. Banham and A. Katsaggelos, ''Digital image 
+restoration,'' IEEE Signal Process. Mag., vol. 14, no. 2, Pp. 
+24-41, Feb. 1997. 
+[20]C. Tian, L. Fei, W. Zheng, Y. Xu, W. Zuo, and 
+C.-W. Denoising: An overview, '' Neural, lin, ''Deep 
+learning on image Netw, vol. 131, pp. 251-275, Nov. 2020. 
